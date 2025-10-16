@@ -81,16 +81,17 @@ document.addEventListener("DOMContentLoaded", async () => {
   const loginLink = document.querySelector("nav ul li a[href='login.html']");
   const filters = document.querySelector(".filters");
 
-  // Bandeau "Mode édition"
-  const banner = document.createElement("div");
-  banner.id = "edition-banner";
-  banner.textContent = "Mode édition";
-  banner.style.display = "none";
-  document.body.insertBefore(banner, document.body.firstChild);
+  // Bandeau "Mode édition" (barre noire en haut)
+  if (token) {
+    const editBar = document.createElement("div");
+    editBar.className = "edit-bar";
+    editBar.innerHTML = `<i class="fa-regular fa-pen-to-square"></i> Mode édition`;
+    document.body.classList.add("with-edit-bar");
+    document.body.prepend(editBar);
+  }
 
   // Si l’utilisateur est connecté
   if (token) {
-    banner.style.display = "block";
     if (filters) filters.style.display = "none";
 
     if (loginLink) {
@@ -102,11 +103,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
     }
 
+    // Bouton "modifier" sous le titre "Mes projets"
     const portfolioTitle = document.querySelector("#portfolio h2");
-    if (portfolioTitle) {
+    if (portfolioTitle && !document.querySelector(".edit-btn")) {
       const editBtn = document.createElement("button");
-      editBtn.textContent = "Modifier";
       editBtn.classList.add("edit-btn");
+      editBtn.innerHTML = `<i class="fa-regular fa-pen-to-square"></i> modifier`;
       portfolioTitle.insertAdjacentElement("afterend", editBtn);
     }
   }

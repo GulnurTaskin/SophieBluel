@@ -181,4 +181,28 @@ if (image && !image.type.startsWith("image/")) {
       console.error("Erreur:", error);
     }
   });
+
+
+
+imageInput.addEventListener("change", (event) => {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  // Preview varsa önce eskiyi temizle
+  const oldPreview = document.querySelector(".preview-image");
+  if (oldPreview) oldPreview.remove();
+
+  // Yeni img elemanı oluştur
+  const img = document.createElement("img");
+  img.classList.add("preview-image");
+  img.src = URL.createObjectURL(file);
+
+  // #image input’unun üstüne ekle
+  const parent = imageInput.parentElement;
+  parent.insertBefore(img, imageInput);
+
+  // Upload alanının görünümünü değiştir
+  imageInput.classList.add("has-preview");
+});
+
 }

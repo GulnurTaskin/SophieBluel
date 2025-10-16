@@ -29,8 +29,14 @@ footer, header, hgroup, menu, nav, section {
 	display: block;
 }
 body {
-	line-height: 1;
+  line-height: 1;
+  font-family: "Work Sans", sans-serif;
+  background-color: #FFFEF8;
+  color: #3D3D3D;
+  margin: 0;
+  padding: 0;
 }
+
 ol, ul {
 	list-style: none;
 }
@@ -54,10 +60,64 @@ body {
 	font-size: 14px;
 }
 header {
-	display: flex;
-	justify-content: space-between;
-	margin: 50px 0
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px 100px;
 }
+
+header h1 {
+  font-family: "Syne", sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  color: #B1663C;
+  margin: 0;
+}
+
+header h1 span {
+  display: block;
+  font-family: "Work Sans", sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 1.5px;
+  color: #000000;
+  margin-top: 2px;
+}
+
+/* === NAVIGATION === */
+header nav ul {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  margin: 0;
+  padding: 0;
+}
+
+header nav ul li a {
+  text-decoration: none;
+  font-size: 16px;
+  color: #000000;
+  font-weight: 400; 
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+header nav ul li a:hover {
+  opacity: 0.6;
+}
+
+header nav ul li a.active,
+header nav ul li a:focus,
+header nav ul li a:visited.active {
+  color: #000000; 
+  font-weight: 700;
+}
+
+header nav ul li img {
+  width: 20px;
+  height: 20px;
+}
+
 section {
 	margin: 50px 0
 }
@@ -125,6 +185,32 @@ li:hover {
 	text-align: center;
 	margin-bottom: 1em;
 }
+/* === FILTRES === */
+.filters {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 40px;
+}
+
+.filters button {
+  font-family: "Syne", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: #1D6154;
+  border: 1px solid #1D6154;
+  background-color: transparent;
+  border-radius: 25px;
+  padding: 10px 25px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filters button.active,
+.filters button:hover {
+  background-color: #1D6154;
+  color: white;
+}
 .gallery {
 	width: 100%;
 	display: grid;
@@ -185,8 +271,10 @@ footer nav ul {
 	justify-content: flex-end;
 	margin: 2em
 }
+/*LOGIN*/
 
- /* Modal*/
+
+/* === MODALE GÉNÉRALE === */
 .modal {
   position: fixed;
   top: 0; left: 0;
@@ -206,15 +294,25 @@ footer nav ul {
   background: rgba(0, 0, 0, 0.6);
 }
 
+/* Permet à la modale de défiler si le contenu dépasse */
 .modal-container {
   position: relative;
   background: white;
-  padding: 20px;
+  padding: 20px 20px 40px; /* un peu d’espace bas pour le bouton */
   border-radius: 10px;
   width: 600px;
   max-width: 90%;
   z-index: 2;
+  max-height: 90vh;   /* ← limite la hauteur à la fenêtre */
+  overflow-y: auto;   /* ← active le scroll vertical */
+  scrollbar-width: thin; /* (optionnel) rend la barre discrète */
 }
+
+/* Empêche le body de défiler quand la modale est ouverte */
+body.modal-open {
+  overflow: hidden;
+}
+
 
 .modal-close {
   position: absolute;
@@ -225,10 +323,29 @@ footer nav ul {
   cursor: pointer;
 }
 
+/* === SECTION GALERIE DANS LA MODALE === */
+.modal-gallery-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 40px;
+  gap: 25px;
+}
+
+.modal-gallery-section h3 {
+  font-family: 'Work Sans';
+  font-weight: 400;
+  font-size: 26px;
+  color: #000;
+  text-align: center;
+}
+
+/* Grille de la galerie */
 .modal-gallery {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
+  gap: 15px;
+  margin-bottom: 30px;
 }
 
 .modal-item {
@@ -242,6 +359,7 @@ footer nav ul {
   border-radius: 5px;
 }
 
+/* Icône de suppression */
 .delete-icon {
   position: absolute;
   top: 6px;
@@ -250,16 +368,285 @@ footer nav ul {
   color: white;
   border-radius: 4px;
   padding: 5px;
-  cursor: pointer;
   font-size: 0.8rem;
+  cursor: pointer;
   transition: background 0.2s ease;
 }
+
+/* === IMAGE PRÉVISUALISÉE & BOUTON AJOUT === */
 .preview-image {
   width: 100%;
   max-height: 250px;
   object-fit: cover;
   border-radius: 8px;
   margin-bottom: 10px;
+  display: block;
 }
 
 
+#image.has-preview {
+  background-color: transparent;
+}
+
+#image.has-preview::before,
+#image.has-preview::after {
+  display: none;
+}
+
+
+/* Bouton “Ajouter une photo” */
+.add-photo-btn {
+  display: block;
+  margin: 0 auto;
+  background-color: #1D6154;
+  color: white;
+  font-family: 'Syne';
+  font-weight: 700;
+  font-size: 14px;
+  padding: 10px 40px;
+  border-radius: 60px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-photo-btn:hover {
+  background-color: #155146;
+}
+
+/* === FORMULAIRE D’AJOUT DE PHOTO === */
+.modal-form-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 60px;
+  gap: 25px;
+}
+
+/* Titre du formulaire */
+.modal-form-section h3 {
+  font-family: 'Work Sans';
+  font-weight: 400;
+  font-size: 26px;
+  color: #000;
+  text-align: center;
+}
+
+/* Structure générale du formulaire */
+#add-photo-form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: 20px;
+  width: 420px;
+  max-width: 100%;
+}
+/* === Zone de téléversement d’image — style Figma === */
+#image {
+  width: 100%;
+  height: 250px;
+  border: none;
+  border-radius: 5px;
+  background-color: #E8F1F6;
+  cursor: pointer;
+  position: relative;
+  color: transparent;
+  overflow: hidden;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+}
+
+/* Cacher le bouton natif */
+#image::file-selector-button {
+  visibility: hidden;
+}
+
+/* Icône principale */
+#image::before {
+  content: "\f03e";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 400;
+  font-size: 60px;
+  color: #B9C5CC;
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Ajouter bouton */
+#image::after {
+  content: "+ Ajouter photo";
+  font-family: "Work Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #306685;
+  background-color: #CBD6DC;
+  border-radius: 25px;
+  padding: 10px 24px;
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+#image::before,
+#image::before {
+  content: "jpg, png : 4mo max";
+  font-family: "Work Sans", sans-serif;
+  font-size: 12px;
+  color: #777;
+  position: absolute;
+  top: 72%;            /* butonun altına hizalar */
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+#image::after + p {
+  display: none;
+}
+
+/* On ajoute le texte d’aide séparé (autre pseudo-element) */
+#image::after {
+  z-index: 2;
+}
+
+#image::after::after {
+  content: "jpg, png : 4mo max";
+  font-family: "Work Sans", sans-serif;
+  font-size: 12px;
+  color: #777;
+}
+
+/* === LABELS DU FORMULAIRE === */
+#add-photo-form label {
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: #2C2C2C;
+}
+
+/* === CHAMPS TEXTE ET MENU DÉROULANT === */
+#add-photo-form input[type="text"],
+#add-photo-form select {
+  display: block;
+  width: 100%;
+  height: 50px;
+  border: none;
+  background-color: #FFF;
+  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+  font-size: 14px;
+  padding: 0 40px 0 12px; /* espace à droite pour l’icône */
+  border-radius: 5px;
+  box-sizing: border-box;
+  cursor: pointer;
+  appearance: none;
+  position: relative;
+}
+
+/* Icône Font Awesome pour le champ Catégorie */
+#add-photo-form {
+  position: relative;
+}
+
+#add-photo-form::after {
+  content: "\f078"; /* chevron-down */
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  font-size: 14px;
+  color: #3D3D3D;
+  position: absolute;
+  right: 26px;
+  top: 460px; 
+  pointer-events: none;
+}
+
+/* === LIGNE DE SÉPARATION === */
+.modal-form-section hr {
+  width: 100%;
+  border: none;
+  border-top: 1px solid #B3B3B3;
+  margin-top: 20px;
+}
+
+/* === BOUTON VALIDER === */
+#add-photo-form button[type="submit"] {
+  width: 230px;
+  height: 36px;
+  border-radius: 60px;
+  background-color: #A7A7A7;
+  color: white;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  border: none;
+  align-self: center;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#add-photo-form button[type="submit"]:hover {
+  background-color: #1D6154;
+}
+
+/* === BARRE D’ÉDITION === */
+.edit-bar {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  background-color: black;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  font-family: 'Work Sans';
+  font-size: 14px;
+  z-index: 1000;
+}
+
+.edit-bar i {
+  font-size: 14px;
+}
+
+body.with-edit-bar {
+  margin-top: 60px;
+}
+
+/* === SECTION PORTFOLIO === */
+#portfolio {
+  text-align: center;
+}
+
+#portfolio h2 {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+/* Bouton “Modifier” */
+.edit-btn {
+  background: none;
+  border: none;
+  color: #000;
+  font-size: 14px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 4px;
+  margin-left: 10px;
+  transition: opacity 0.2s ease;
+}
+
+.edit-btn i {
+  font-size: 14px;
+}
+
+.edit-btn:hover {
+  opacity: 0.7;
+}
