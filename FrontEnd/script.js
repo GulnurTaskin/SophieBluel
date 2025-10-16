@@ -1,24 +1,25 @@
-let allWorks = []; // variable globale pour stocker tous les travaux
+import { initModal } from "./modal.js";
 
-// Récupérer la liste des travaux depuis l'API
-async function fetchWorks() {
+let allWorks = [];
+
+// --- Récupérer la liste des travaux ---
+export async function fetchWorks() {
   try {
     const response = await fetch("http://localhost:5678/api/works");
-    allWorks = await response.json(); // sauvegarder tous les travaux en mémoire
-    displayWorks(allWorks);           // afficher tous les travaux
+    allWorks = await response.json();
+    displayWorks(allWorks);
   } catch (error) {
     console.error("Erreur lors de la récupération des travaux :", error);
   }
 }
 
-// Afficher les travaux dans la galerie
-function displayWorks(works) {
+// --- Afficher les travaux dans la galerie principale ---
+export function displayWorks(works) {
   const gallery = document.querySelector(".gallery");
-  gallery.innerHTML = ""; // vider la galerie avant de la remplir
+  gallery.innerHTML = "";
 
   works.forEach(work => {
     const figure = document.createElement("figure");
-
     const img = document.createElement("img");
     img.src = work.imageUrl;
     img.alt = work.title;
@@ -32,30 +33,31 @@ function displayWorks(works) {
   });
 }
 
-// Récupérer la liste des catégories depuis l'API
+// --- Récupérer les catégories ---
 async function fetchCategories() {
   try {
     const response = await fetch("http://localhost:5678/api/categories");
     const categories = await response.json();
-    displayFilters(categories); // créer dynamiquement les boutons de filtre
+    displayFilters(categories);
   } catch (error) {
     console.error("Erreur lors de la récupération des catégories :", error);
   }
 }
 
-// Créer les boutons de filtre
+// --- Créer les boutons de filtre ---
 function displayFilters(categories) {
   const filtersContainer = document.querySelector(".filters");
+  if (!filtersContainer) return;
   filtersContainer.innerHTML = "";
 
   // Bouton "Tous"
   const allBtn = document.createElement("button");
   allBtn.textContent = "Tous";
-  allBtn.classList.add("active"); // par défaut sélectionné
+  allBtn.classList.add("active");
   allBtn.addEventListener("click", () => {
     document.querySelectorAll(".filters button").forEach(btn => btn.classList.remove("active"));
     allBtn.classList.add("active");
-    displayWorks(allWorks); // réafficher tous les travaux
+    displayWorks(allWorks);
   });
   filtersContainer.appendChild(allBtn);
 
@@ -66,18 +68,53 @@ function displayFilters(categories) {
     btn.addEventListener("click", () => {
       document.querySelectorAll(".filters button").forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
-      filterWorksByCategory(category.id);
+      const filtered = allWorks.filter(work => work.categoryId === category.id);
+      displayWorks(filtered);
     });
     filtersContainer.appendChild(btn);
   });
 }
 
-// Filtrer les travaux par catégorie
-function filterWorksByCategory(categoryId) {
-  const filtered = allWorks.filter(work => work.categoryId === categoryId);
-  displayWorks(filtered);
-}
+// --- Mode administrateur ---
+document.addEventListener("DOMContentLoaded", async () => {
+  const token = localStorage.getItem("token");
+  const loginLink = document.querySelector("nav ul li a[href='login.html']");
+  const filters = document.querySelector(".filters");
 
-// Charger les données au démarrage
-fetchWorks();
-fetchCategories();
+  // Bandeau "Mode édition"
+  const banner = document.createElement("div");
+  banner.id = "edition-banner";
+  banner.textContent = "Mode édition";
+  banner.style.display = "none";
+  document.body.insertBefore(banner, document.body.firstChild);
+
+  // Si l’utilisateur est connecté
+  if (token) {
+    banner.style.display = "block";
+    if (filters) filters.style.display = "none";
+
+    if (loginLink) {
+      loginLink.textContent = "logout";
+      loginLink.href = "#";
+      loginLink.addEventListener("click", () => {
+        localStorage.removeItem("token");
+        window.location.href = "index.html";
+      });
+    }
+
+    const portfolioTitle = document.querySelector("#portfolio h2");
+    if (portfolioTitle) {
+      const editBtn = document.createElement("button");
+      editBtn.textContent = "Modifier";
+      editBtn.classList.add("edit-btn");
+      portfolioTitle.insertAdjacentElement("afterend", editBtn);
+    }
+  }
+
+  // --- Chargement initial ---
+  await fetchWorks();
+  await fetchCategories();
+
+  // --- Initialisation de la modale ---
+  initModal(allWorks, displayWorks);
+});
