@@ -1,1 +1,4 @@
 .idea
+# .gitignore
+Backend/images/
+Backend/database.sqlite
