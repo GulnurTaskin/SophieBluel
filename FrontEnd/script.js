@@ -22,7 +22,7 @@ export function displayWorks(works) {
     const figure = document.createElement("figure");
     const img = document.createElement("img");
     img.src = work.imageUrl;
-    img.alt = work.title;
+    img.alt = work.title; 
 
     const caption = document.createElement("figcaption");
     caption.textContent = work.title;

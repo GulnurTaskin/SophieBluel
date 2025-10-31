@@ -4,18 +4,25 @@
   <meta charset="UTF-8">
   <title>Connexion - Sophie Bluel</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Polices et styles -->
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/style.css">
   <link rel="stylesheet" href="./assets/login.css">
+
+  <meta name="description" content="Page de connexion pour accéder à l’espace administrateur du portfolio Sophie Bluel.">
 </head>
+
 <body>
 <header>
   <h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
   <nav>
     <ul>
-      <li><a href="index.html">projets</a></li>
+      <!-- Liens harmonisés avec index.html -->
+      <li><a href="index.html#portfolio">projets</a></li>
       <li><a href="index.html#contact">contact</a></li>
       <li><a href="login.html" class="active">login</a></li>
-      <li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
+      <li><img src="./assets/icons/instagram.png" alt="Logo Instagram de Sophie Bluel"></li>
     </ul>
   </nav>
 </header>
@@ -23,13 +30,14 @@
 <main>
   <section id="login">
     <h2>Log in</h2>
-    <form>
+    <!-- Ajout d'un id pour le script JS -->
+    <form id="login-form" method="POST" action="">
       <label for="email">E-mail</label>
       <input type="email" id="email" name="email" required>
-      
+
       <label for="password">Mot de passe</label>
       <input type="password" id="password" name="password" required>
-      
+
       <input type="submit" value="Se connecter">
     </form>
     <p><a href="#">Mot de passe oublié</a></p>
@@ -43,6 +51,7 @@
     </ul>
   </nav>
 </footer>
+
 <script src="./login.js"></script>
 </body>
 </html>

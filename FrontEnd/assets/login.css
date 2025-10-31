@@ -73,7 +73,7 @@ header nav ul li img {
   text-align: center;
 }
 
-/* Başlık */
+
 #login h2 {
   font-family: "Syne", sans-serif;
   font-weight: 700;
@@ -99,7 +99,7 @@ header nav ul li img {
   color: #3D3D3D;
 }
 
-/* Input alanları */
+/* Input */
 #login input[type="email"],
 #login input[type="password"] {
   width: 100%;
@@ -152,4 +152,16 @@ footer {
   padding: 20px 100px;
   font-size: 12px;
   color: #3D3D3D;
+}
+/* centrer la section login sur toute la largeur */
+body {
+  max-width: 100%; /* annule la limite de style.css */
+}
+
+/* S’assure que la section login prend toute la largeur */
+main {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

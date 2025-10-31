@@ -1,0 +1,381 @@
+/* ==========================================================
+   ===  MODALE - STYLES GÉNÉRAUX  ==========================
+   ========================================================== */
+
+/* Conteneur principal de la modale (invisible par défaut) */
+.modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Quand la modale est active */
+.modal.active {
+  display: flex;
+}
+
+/* Fond sombre semi-transparent derrière la modale */
+.modal-overlay {
+  position: absolute;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+/* Conteneur interne avec scroll si le contenu dépasse */
+.modal-container {
+  position: relative;
+  background: #fff;
+  padding: 20px 20px 40px;
+  border-radius: 10px;
+  width: 600px;
+  max-width: 90%;
+  z-index: 2;
+  max-height: 90vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+/* Empêche le body de défiler quand la modale est ouverte */
+body.modal-open {
+  overflow: hidden;
+}
+
+/* Bouton de fermeture (croix) */
+.modal-close {
+  position: absolute;
+  top: 10px; right: 15px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* ==========================================================
+   ===  SECTION GALERIE DANS LA MODALE  =====================
+   ========================================================== */
+
+.modal-gallery-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 40px;
+  gap: 25px;
+}
+
+.modal-gallery-section h3 {
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 400;
+  font-size: 26px;
+  color: #000;
+  text-align: center;
+}
+
+/* Grille des miniatures */
+.modal-gallery {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.modal-item {
+  position: relative;
+}
+
+.modal-item img {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+/* Icône de suppression (poubelle) */
+.delete-icon {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  border-radius: 4px;
+  padding: 5px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+/* ==========================================================
+   ===  SECTION FORMULAIRE D’AJOUT DE PHOTO  ================
+   ========================================================== */
+
+.modal-form-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 60px;
+  gap: 25px;
+}
+
+/* Titre du formulaire */
+.modal-form-section h3 {
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 400;
+  font-size: 26px;
+  color: #000;
+  text-align: center;
+}
+
+/* Structure globale du formulaire */
+#add-photo-form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: 20px;
+  width: 420px;
+  max-width: 100%;
+  position: relative;
+}
+
+/* ==========================================================
+   ===  ZONE DE TÉLÉVERSEMENT D’IMAGE =======================
+   ========================================================== */
+
+#image {
+  width: 100%;
+  height: 250px;
+  border: none;
+  border-radius: 5px;
+  background-color: #E8F1F6;
+  cursor: pointer;
+  position: relative;
+  color: transparent;
+  overflow: hidden;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+}
+
+/* Cache le bouton natif */
+#image::file-selector-button {
+  visibility: hidden;
+}
+
+/* Icône principale (Font Awesome) */
+#image::before {
+  content: "\f03e";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 400;
+  font-size: 60px;
+  color: #B9C5CC;
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Bouton “+ Ajouter photo” */
+#image::after {
+  content: "+ Ajouter photo";
+  font-family: "Work Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #306685;
+  background-color: #CBD6DC;
+  border-radius: 25px;
+  padding: 10px 24px;
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 2;
+}
+
+/* Texte d’aide */
+.upload-wrapper {
+  background-color: #E8F1F6;
+  border-radius: 5px;
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  text-align: center;
+  overflow: hidden;
+}
+
+/* Icône au-dessus du bouton */
+.upload-icon {
+  font-size: 60px;
+  color: #B9C5CC;
+  margin-bottom: 10px;
+}
+
+/* Bouton “+ Ajouter photo” */
+.upload-btn {
+  background-color: #CBD6DC;
+  color: #306685;
+  font-family: "Work Sans", sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  border: none;
+  border-radius: 25px;
+  padding: 10px 24px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Input transparent et invisible mais cliquable */
+#image {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.upload-btn:hover {
+  background-color: #b7c7cf;
+}
+
+/* Bouton et icône */
+.upload-hint {
+  font-family: "Work Sans", sans-serif;
+  font-size: 12px;
+  color: #777;
+  margin-top: 8px;
+}
+
+/* Masquer le texte quand une image est prévisualisée */
+.upload-wrapper.has-preview .upload-hint {
+  display: none;
+}
+
+
+/* Quand une image est prévisualisée */
+.preview-image {
+  width: 100%;
+  max-height: 250px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  display: block;
+}
+
+#image.has-preview {
+  background-color: transparent;
+}
+
+#image.has-preview::before,
+#image.has-preview::after {
+  display: none;
+}
+
+/* ==========================================================
+   ===  LABELS ET CHAMPS DU FORMULAIRE  =====================
+   ========================================================== */
+
+#add-photo-form label {
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: #2C2C2C;
+}
+
+/* Champs texte et menu déroulant */
+#add-photo-form input[type="text"],
+#add-photo-form select {
+  display: block;
+  width: 100%;
+  height: 50px;
+  border: none;
+  background-color: #FFF;
+  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+  font-size: 14px;
+  padding: 0 40px 0 12px; /* espace à droite pour l’icône */
+  border-radius: 5px;
+  box-sizing: border-box;
+  cursor: pointer;
+  appearance: none;
+}
+
+/* ==========================================================
+   ===  ICÔNE CHEVRON DU MENU DÉROULANT  ====================
+   ========================================================== */
+
+/* Conteneur relatif pour le chevron */
+.select-wrapper {
+  position: relative;
+}
+
+/* Chevron centré verticalement */
+.select-wrapper::after {
+  content: "\f078";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  font-size: 14px;
+  color: #3D3D3D;
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+/* ==========================================================
+   ===  SÉPARATEUR ET BOUTON DE VALIDATION ==================
+   ========================================================== */
+
+.modal-form-section hr {
+  width: 100%;
+  border: none;
+  border-top: 1px solid #B3B3B3;
+  margin-top: 20px;
+}
+
+/* Bouton "Valider" */
+#add-photo-form button[type="submit"] {
+  width: 230px;
+  height: 36px;
+  border-radius: 60px;
+  background-color: #A7A7A7;
+  color: white;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  border: none;
+  align-self: center;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#add-photo-form button[type="submit"]:hover {
+  background-color: #1D6154;
+}
+
+/* ==========================================================
+   ===  BOUTON "AJOUTER UNE PHOTO" DANS LA GALERIE ==========
+   ========================================================== */
+
+.add-photo-btn {
+  display: block;
+  margin: 0 auto;
+  background-color: #1D6154;
+  color: white;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 10px 40px;
+  border-radius: 60px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-photo-btn:hover {
+  background-color: #155146;
+}

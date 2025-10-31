@@ -39,7 +39,7 @@ export function initModal(allWorks, displayWorks) {
 
           if (response.ok) {
             // Supprimer du DOM
-            figure.remove();
+            figure.remove(); // suppression de figure (image et titre)
             allWorks = allWorks.filter(w => w.id !== work.id);
             displayWorks(allWorks);
           } else {
@@ -79,6 +79,7 @@ export function initModal(allWorks, displayWorks) {
 
   // === Ouvrir la modale ===
   document.addEventListener("click", e => {
+    console.log("***Bonjour***");
     if (e.target.classList.contains("edit-btn")) {
       modal.classList.add("active");
       modal.setAttribute("aria-hidden", "false");
@@ -89,8 +90,6 @@ export function initModal(allWorks, displayWorks) {
 
   // === Fermer la modale ===
   const closeModal = () => {
-   
-   
     modal.classList.remove("active"); 
     modal.setAttribute("aria-hidden", "true");
   };
@@ -131,10 +130,10 @@ export function initModal(allWorks, displayWorks) {
     const token = localStorage.getItem("token");
     const image = document.getElementById("image").files[0];
     // Vérification du type MIME
-if (image && !image.type.startsWith("image/")) {
-  alert("Le fichier doit être une image (jpg, png, etc).");
-  return;
-}
+    if (image && !image.type.startsWith("image/")) {
+      alert("Le fichier doit être une image (jpg, png, etc).");
+      return;
+    }
     const title = document.getElementById("title").value.trim();
     const category = document.getElementById("category").value;
 
@@ -182,27 +181,30 @@ if (image && !image.type.startsWith("image/")) {
     }
   });
 
+  imageInput.addEventListener("change", (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
 
+    // Si un aperçu existe déjà, le supprimer avant d’en ajouter un nouveau
+    const oldPreview = document.querySelector(".preview-image");
+    if (oldPreview) oldPreview.remove();
 
-imageInput.addEventListener("change", (event) => {
-  const file = event.target.files[0];
-  if (!file) return;
+    // Créer un nouvel élément img pour l’aperçu
+    const img = document.createElement("img");
+    img.classList.add("preview-image");
+    img.src = URL.createObjectURL(file);
 
-  // Preview varsa önce eskiyi temizle
-  const oldPreview = document.querySelector(".preview-image");
-  if (oldPreview) oldPreview.remove();
+    // L’insérer au-dessus de l’input #image
+    const parent = imageInput.parentElement;
+    parent.insertBefore(img, imageInput);
 
-  // Yeni img elemanı oluştur
-  const img = document.createElement("img");
-  img.classList.add("preview-image");
-  img.src = URL.createObjectURL(file);
+    // Modifier l’apparence de la zone d’upload
+    imageInput.classList.add("has-preview");
+    parent.classList.add("has-preview");
 
-  // #image input’unun üstüne ekle
-  const parent = imageInput.parentElement;
-  parent.insertBefore(img, imageInput);
+    const uploadWrapper = document.querySelector(".upload-wrapper");
+uploadWrapper.classList.remove("has-preview");
 
-  // Upload alanının görünümünü değiştir
-  imageInput.classList.add("has-preview");
-});
+  });
 
 }
