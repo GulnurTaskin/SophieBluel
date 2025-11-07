@@ -60,11 +60,11 @@ export function initModal(allWorks, displayWorks) {
   async function loadCategoriesInForm() {
     const categorySelect = document.getElementById("category");
     if (!categorySelect) return;
-    categorySelect.innerHTML = "<option value=''>-- Sélectionnez une catégorie --</option>";
+    categorySelect.innerHTML = "<option value=''>-- Sélectionnez une catégorie --</option>"; // vide
 
     try {
       const response = await fetch("http://localhost:5678/api/categories");
-      const categories = await response.json();
+      const categories = await response.json(); // [{ id: 1, name: "Objets" }]
 
       categories.forEach(cat => {
         const option = document.createElement("option");
@@ -78,37 +78,49 @@ export function initModal(allWorks, displayWorks) {
   }
 
   // === Ouvrir la modale ===
-  document.addEventListener("click", e => {
-    console.log("***Bonjour***");
-    if (e.target.classList.contains("edit-btn")) {
-      modal.classList.add("active");
-      modal.setAttribute("aria-hidden", "false");
-      displayModalGallery(allWorks);
-      loadCategoriesInForm(); // 
-    }
-  });
+  document.addEventListener("click", e => { // il ecoute tout les click sur la page
+  if (e.target.classList.contains("edit-btn")) { // il le controler si le bouton avait class="edit-btn"
+    modal.classList.add("active");
+    modal.setAttribute("aria-hidden", "false");
+
+    // Toujours afficher la section galerie
+    gallerySection.style.display = "block";
+    formSection.style.display = "none";
+
+    // Réinitialiser le formulaire si besoin
+    addPhotoForm.reset();
+    const oldPreview = addPhotoForm.querySelector(".preview-image"); // supprimer les ancien preview d'image 
+    if (oldPreview) oldPreview.remove();
+    const uploadWrapper = document.querySelector(".upload-wrapper");
+    if (uploadWrapper) uploadWrapper.classList.remove("has-preview"); // Cela retourner à l'état précédent du champ bleu « Ajouter une photo ».
+
+    // Charger les données
+    displayModalGallery(allWorks); // creation de petit galerie de modal
+    loadCategoriesInForm();  // mis à jour de liste de categories
+  }
+});
 
   // === Fermer la modale ===
   const closeModal = () => {
     modal.classList.remove("active"); 
     modal.setAttribute("aria-hidden", "true");
   };
-  overlay.addEventListener("click", closeModal);
-  closeBtn.addEventListener("click", closeModal);
+  overlay.addEventListener("click", closeModal); // ecran noir derriere le modal
+  closeBtn.addEventListener("click", closeModal); // bouton x
 
-  // === Passer à la section “Ajout photo” ===
+  // === Passer à la section “Ajout photo” ( bouton: Ajouter une photo )===
   addPhotoBtn.addEventListener("click", () => {
-    gallerySection.style.display = "none";
-    formSection.style.display = "block";
+    gallerySection.style.display = "none"; // fermer
+    formSection.style.display = "block"; // ouvert
   });
 
-  // === Retour à la galerie ===
+  // === Retour à la galerie (icon flesh)===
   backBtn.addEventListener("click", () => {
-    formSection.style.display = "none";
-    gallerySection.style.display = "block";
+    formSection.style.display = "none"; // fermer
+    gallerySection.style.display = "block"; // ouvert
   });
 
-  // === Preview de l’image sélectionnée ===
+  // === Preview de l’image sélectionnée (bouton: +Ajouter photo) ===
   imageInput.addEventListener("change", (e) => {
     const file = e.target.files[0];
     if (!file) return;
