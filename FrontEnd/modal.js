@@ -121,19 +121,32 @@ export function initModal(allWorks, displayWorks) {
   });
 
   // === Preview de l’image sélectionnée (bouton: +Ajouter photo) ===
-  imageInput.addEventListener("change", (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+ // === Prévisualisation de l’image sélectionnée (+ Ajouter photo) ===
+imageInput.addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
 
-    const preview = document.createElement("img");
-    preview.src = URL.createObjectURL(file);
-    preview.classList.add("preview-image");
+  // --- Supprimer une ancienne prévisualisation s’il y en a une ---
+  const oldPreview = addPhotoForm.querySelector(".preview-image");
+  if (oldPreview) oldPreview.remove();
 
-    const oldPreview = addPhotoForm.querySelector(".preview-image");
-    if (oldPreview) oldPreview.remove();
+  // --- Créer un nouvel élément <img> pour la prévisualisation ---
+  const preview = document.createElement("img");
+  preview.src = URL.createObjectURL(file);
+  preview.classList.add("preview-image");
 
-    addPhotoForm.insertBefore(preview, imageInput);
-  });
+  // --- Insérer l’image juste avant l’input #image ---
+  const parent = imageInput.parentElement;
+  parent.insertBefore(preview, imageInput);
+
+  // --- Mettre à jour l’apparence de la zone d’upload ---
+  parent.classList.add("has-preview");
+  imageInput.classList.add("has-preview");
+
+  const uploadWrapper = document.querySelector(".upload-wrapper");
+  if (uploadWrapper) uploadWrapper.classList.remove("has-preview");
+});
+
 
   // === Soumission du formulaire d’ajout ===
   addPhotoForm.addEventListener("submit", async (e) => {
@@ -193,30 +206,5 @@ export function initModal(allWorks, displayWorks) {
     }
   });
 
-  imageInput.addEventListener("change", (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    // Si un aperçu existe déjà, le supprimer avant d’en ajouter un nouveau
-    const oldPreview = document.querySelector(".preview-image");
-    if (oldPreview) oldPreview.remove();
-
-    // Créer un nouvel élément img pour l’aperçu
-    const img = document.createElement("img");
-    img.classList.add("preview-image");
-    img.src = URL.createObjectURL(file);
-
-    // L’insérer au-dessus de l’input #image
-    const parent = imageInput.parentElement;
-    parent.insertBefore(img, imageInput);
-
-    // Modifier l’apparence de la zone d’upload
-    imageInput.classList.add("has-preview");
-    parent.classList.add("has-preview");
-
-    const uploadWrapper = document.querySelector(".upload-wrapper");
-uploadWrapper.classList.remove("has-preview");
-
-  });
 
 }
