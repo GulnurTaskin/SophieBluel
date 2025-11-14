@@ -220,9 +220,18 @@ li:hover {
 }
 
 .gallery img {
-	width: 100%;
-
+  width: 100%;
+  aspect-ratio: 3 / 4; 
+  object-fit: cover;
 }
+
+.gallery figure {
+  width: 250px;
+  height: 350px;
+  overflow: hidden; 
+}
+
+
 #contact {
 	width: 50%;
 margin: auto;
